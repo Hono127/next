@@ -46,8 +46,10 @@ export const getSinglePost = async (slug) => {
       },
     },
   });
-  const page = response.results[0];
+  const page = response.results;
+  const metadata = getPageMetaData(page);
+  console.log(metadata);
   return {
-    page,
+    metadata,
   };
 };
