@@ -1,5 +1,14 @@
 import React from 'react'
-import { getSinglePost } from '../../lib/notionAPI'
+import { getAllPosts, getSinglePost } from '../../lib/notionAPI'
+
+export const getStaticPaths = async () => {
+  const allPosts = await getAllPosts();
+  const paths = allPosts.map(({ slug }) => ({ params: { slug } }))
+  return {
+    paths,
+    fallback: "blocking", // false or "blocking"
+  };
+}
 
 export const getStaticProps = async (params) => {
   const post = await getSinglePost(params.slug);
@@ -11,7 +20,7 @@ export const getStaticProps = async (params) => {
   };
 }
 
-const Post = () => {
+const Post = ({ post }) => {
   return (
     <section>
       <h2 className='w-full text-2xl font-medium'>投稿内容</h2>
